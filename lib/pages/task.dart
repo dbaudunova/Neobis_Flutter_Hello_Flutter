@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:neobis_flutter_hello_flutter/client/hive_names.dart';
 import 'package:neobis_flutter_hello_flutter/models/todo.dart';
@@ -12,6 +13,32 @@ class Task extends StatefulWidget {
 
 class _TaskState extends State<Task> {
   String task = '';
+  final TextEditingController controller = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    controller.dispose();
+    super.dispose();
+  }
+
+  _isNullOrNot() {
+    if (controller.text.isEmpty) {
+      Fluttertoast.showToast(msg: 'You cannot add null task',
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          textColor: Colors.white,
+          fontSize: 16.0);
+      Navigator.of(context).pop();
+    } else if(controller.text.isNotEmpty) {
+      setState(() {
+        _onFormSubmit();
+        controller.clear();
+      });
+
+    }
+  }
 
   _dialogOpen() {
     showDialog(
@@ -22,6 +49,7 @@ class _TaskState extends State<Task> {
                   style: TextStyle(
                       fontFamily: 'TTNorms', fontWeight: FontWeight.bold)),
               content: TextField(
+                controller: controller,
                 decoration: const InputDecoration(
                     hintText: 'Add your task',
                     hintStyle: TextStyle(fontFamily: 'TTNorms')),
@@ -34,9 +62,7 @@ class _TaskState extends State<Task> {
               actions: [
                 OutlinedButton(
                     onPressed: () {
-                      setState(() {
-                        _onFormSubmit();
-                      });
+                      _isNullOrNot();
                     },
                     child: const Text('Add',
                         style: TextStyle(
@@ -89,7 +115,9 @@ class _TaskState extends State<Task> {
                         textColor: Colors.black,
                         title: Text(res!.task),
                         trailing: IconButton(
-                          icon: const Icon(Icons.delete, color: Colors.red,
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
                           ),
                           onPressed: () {
                             setState(() {
