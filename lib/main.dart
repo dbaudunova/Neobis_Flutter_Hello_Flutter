@@ -10,8 +10,9 @@ void main() async {
   await Hive.openBox<Todo>(HiveBoxes.todo);
 
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     theme: ThemeData(
-        appBarTheme: const AppBarTheme(color: Colors.deepPurpleAccent)),
+        appBarTheme: const AppBarTheme(color: Colors.black)),
     home: const Task(),
   ));
 }

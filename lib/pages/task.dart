@@ -11,14 +11,13 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
-  String title = '';
   String task = '';
-  List todoList = [];
 
   _dialogOpen() {
     showDialog(
         context: context,
-        builder: (BuildContext context) => AlertDialog(
+        builder: (BuildContext context) =>
+            AlertDialog(
               title: const Text('Add Task',
                   style: TextStyle(
                       fontFamily: 'TTNorms', fontWeight: FontWeight.bold)),
@@ -57,7 +56,7 @@ class _TaskState extends State<Task> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          foregroundColor: Colors.deepPurpleAccent,
+          foregroundColor: Colors.black,
           title: const Text('To-do List'),
           titleTextStyle: const TextStyle(
             fontSize: 20,
@@ -71,7 +70,7 @@ class _TaskState extends State<Task> {
             if (box.values.isEmpty) {
               return const Center(
                 child:
-                    Text("Todo list is empty", style: TextStyle(fontSize: 20)),
+                Text("Todo list is empty", style: TextStyle(fontSize: 20)),
               );
             }
             return ListView.builder(
@@ -79,22 +78,32 @@ class _TaskState extends State<Task> {
                 itemBuilder: (context, index) {
                   Todo? res = box.getAt(index);
                   return Container(
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(8),
                     child: Material(
                       elevation: 4.0,
                       borderRadius: BorderRadius.circular(16.0),
-                      color: Colors.indigo,
+                      color: Colors.grey[350],
                       child: ListTile(
-                        titleTextStyle: const TextStyle(fontFamily: 'TTNorms', fontSize: 24),
-                        textColor: Colors.white,
+                        titleTextStyle: const TextStyle(
+                            fontFamily: 'TTNorms', fontSize: 24),
+                        textColor: Colors.black,
                         title: Text(res!.task),
+                        trailing: IconButton(
+                          icon: const Icon(Icons.delete, color: Colors.red,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              res.delete();
+                            });
+                          },
+                        ),
                       ),
                     ),
                   );
                 });
           }),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.black,
         child: const Icon(
           Icons.add,
           color: Colors.white,
