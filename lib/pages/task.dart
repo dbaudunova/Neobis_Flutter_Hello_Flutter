@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:neobis_flutter_hello_flutter/client/hive_names.dart';
+import 'package:neobis_flutter_hello_flutter/models/todo.dart';
 
 class Task extends StatefulWidget {
   const Task({super.key});
@@ -8,30 +11,46 @@ class Task extends StatefulWidget {
 }
 
 class _TaskState extends State<Task> {
+  String title = '';
+  String task = '';
   List todoList = [];
-  String _userTask = '';
 
   _dialogOpen() {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: const Text('Add Task'),
+              title: const Text('Add Task',
+                  style: TextStyle(
+                      fontFamily: 'TTNorms', fontWeight: FontWeight.bold)),
               content: TextField(
+                decoration: const InputDecoration(
+                    hintText: 'Add your task',
+                    hintStyle: TextStyle(fontFamily: 'TTNorms')),
                 onChanged: (String value) {
-                  _userTask = value;
+                  setState(() {
+                    task = value;
+                  });
                 },
               ),
               actions: [
                 OutlinedButton(
                     onPressed: () {
                       setState(() {
-                        todoList.add(_userTask);
+                        _onFormSubmit();
                       });
-                      Navigator.of(context).pop();
                     },
-                    child: const Text('Add'))
+                    child: const Text('Add',
+                        style: TextStyle(
+                            fontFamily: 'TTNorms',
+                            fontWeight: FontWeight.bold)))
               ],
             ));
+  }
+
+  void _onFormSubmit() {
+    Box<Todo> contactsBox = Hive.box<Todo>(HiveBoxes.todo);
+    contactsBox.add(Todo(task: task));
+    Navigator.of(context).pop();
   }
 
   @override
@@ -46,24 +65,33 @@ class _TaskState extends State<Task> {
             fontFamily: 'TTNorms',
             fontWeight: FontWeight.bold,
           )),
-      body: ListView.builder(
-          itemCount: todoList.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Dismissible(
-                key: Key(todoList[index]),
-                child: Card(
-                  child: ListTile(
-                    title: Text(todoList[index]),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        setState(() {
-                          todoList.removeAt(index);
-                        });
-                      },
+      body: ValueListenableBuilder(
+          valueListenable: Hive.box<Todo>(HiveBoxes.todo).listenable(),
+          builder: (context, Box<Todo> box, _) {
+            if (box.values.isEmpty) {
+              return const Center(
+                child:
+                    Text("Todo list is empty", style: TextStyle(fontSize: 20)),
+              );
+            }
+            return ListView.builder(
+                itemCount: box.values.length,
+                itemBuilder: (context, index) {
+                  Todo? res = box.getAt(index);
+                  return Container(
+                    padding: const EdgeInsets.all(4),
+                    child: Material(
+                      elevation: 4.0,
+                      borderRadius: BorderRadius.circular(16.0),
+                      color: Colors.indigo,
+                      child: ListTile(
+                        titleTextStyle: const TextStyle(fontFamily: 'TTNorms', fontSize: 24),
+                        textColor: Colors.white,
+                        title: Text(res!.task),
+                      ),
                     ),
-                  ),
-                ));
+                  );
+                });
           }),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.deepPurpleAccent,
