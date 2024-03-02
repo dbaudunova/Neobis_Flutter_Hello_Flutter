@@ -31,12 +31,11 @@ class _TaskState extends State<Task> {
           textColor: Colors.white,
           fontSize: 16.0);
       Navigator.of(context).pop();
-    } else if(controller.text.isNotEmpty) {
+    } else if(controller.text.trim().isNotEmpty) {
       setState(() {
         _onFormSubmit();
         controller.clear();
       });
-
     }
   }
 
@@ -48,7 +47,7 @@ class _TaskState extends State<Task> {
               title: const Text('Add Task',
                   style: TextStyle(
                       fontFamily: 'TTNorms', fontWeight: FontWeight.bold)),
-              content: TextField(
+              content: TextFormField(
                 controller: controller,
                 decoration: const InputDecoration(
                     hintText: 'Add your task',
