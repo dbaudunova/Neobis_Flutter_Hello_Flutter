@@ -1,16 +1,27 @@
-# neobis_flutter_hello_flutter
+# Hello Flutter!
 
-A new Flutter project.
+This is an Application for managing your tasks using "Hive" library for saving data to local storage.
 
-## Getting Started
+## Features
 
-This project is a starting point for a Flutter application.
+* Add tasks that you need.
+* View and delete existing tasks.
 
-A few resources to get you started if this is your first Flutter project:
+## Dependencies
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+For this project I have used such libraries as:
+* [Hive Library](https://pub.dev/packages/hive) for saving and deleting data.
+* [ToastFlutter Library](https://pub.dev/packages/fluttertoast) for adding Toast notification to User.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Installation
+
+For running this app you have to:
+1. Install Android Studio or VS Code if you don't have one.
+2. Install [Flutter](https://docs.flutter.dev/get-started/install) on your local machine.
+3. Clone this repository.
+4. Run project.
+
+## Usage
+
+
+https://github.com/dbaudunova/Neobis_Flutter_Hello_Flutter/assets/117513791/cbf404e0-2d63-4e04-8c79-de70e54b5e20
